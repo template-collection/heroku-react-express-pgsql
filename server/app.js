@@ -2,6 +2,20 @@ const express = require('express');
 const compression = require('compression');
 const morgan = require('morgan');
 const path = require('path');
+const Sequelize = require('sequelize');
+const UserModel = require('./database/User.model');
+
+
+// Database
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialectOptions: {
+        ssl: true
+    }
+});
+
+const User = UserModel(sequelize);
+
+
 
 const normalizedPort = port => parseInt(port, 10);
 const PORT = normalizedPort(process.env.PORT || 5000);
@@ -25,9 +39,13 @@ app.use(express.static(path.resolve(__dirname, '..', 'build')));
 
 // Server endpoints
 app.get('/api/data', (req, res) => {
-    res.json({
-        user: "jhon_doe",
-        age: 19
+    sequelize.authenticate()
+        .catch(err => console.log(err));
+
+    User.sync();
+
+    User.findAll().then(users => {
+        res.send(users);
     });
 });
 
