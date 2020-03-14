@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const path = require('path');
 const Sequelize = require('sequelize');
 const UserModel = require('./database/User.model');
-
+const open = require('open');
 
 // Database
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
@@ -60,5 +60,6 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
     if (dev) {
         console.log("Listening on: http://localhost:" + PORT);
+        open("http://localhost:" + PORT);
     }
 });
