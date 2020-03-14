@@ -22,8 +22,8 @@ class App extends React.Component<any, any> {
 
   public render(): any {
     return [
-        <h1>Hello, React</h1>,
-        <p>Welcome, {this.state.firstname} {this.state.lastname}</p>
+        <h1 key={0}>Hello, React</h1>,
+        <p key={1}>Welcome, {this.state.firstname} {this.state.lastname}</p>
     ];
   }
 }
