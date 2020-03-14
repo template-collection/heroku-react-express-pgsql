@@ -6,13 +6,13 @@ class App extends React.Component<any, any> {
     super(props);
 
     this.state = {
-      firstname: null,
-      lastname: null
+      first_name: null,
+      last_name: null
     }
   }
 
   public componentDidMount(): void {
-    fetch('/api/example')
+    fetch('/api/database')
         .then(response => response.json())
         .then(data => this.setState(data))
         .catch(err => console.log(err));
@@ -23,7 +23,7 @@ class App extends React.Component<any, any> {
   public render(): any {
     return [
         <h1 key={0}>Hello, React</h1>,
-        <p key={1}>Welcome, {this.state.firstname} {this.state.lastname}</p>
+        <p key={1}>Welcome, {this.state.first_name} {this.state.last_name}</p>
     ];
   }
 }

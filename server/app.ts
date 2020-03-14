@@ -4,6 +4,14 @@ import path from 'path';
 import morgan from 'morgan';
 import {Port} from './utils/port.util';
 
+import {Sequelize} from 'sequelize';
+import {UserModel} from "./database/user.model";
+
+// Database
+// @ts-ignore
+const sequelize = new Sequelize(process.env.DATABASE_URL.toString(), {dialectOptions: {ssl: true}});
+const User = UserModel(sequelize);
+
 
 // Create express app
 const app = express();
@@ -35,13 +43,21 @@ if (DEVELOPMENT) {
 // Routes
 app.get('/api/example', (req: Request, res: Response) => {
     res.json({
-        firstname: 'John',
-        lastname: 'Doe'
+        first_name: 'John',
+        last_name: 'Doe'
     });
 });
 
+
 app.get('/api/database', (req: Request, res: Response) => {
-    res.send("Database access here ...");
+    sequelize.authenticate();
+
+    User.sync();
+
+    // @ts-ignore
+    User.findAll().then(users => {
+        res.json(users[0]);
+    });
 });
 
 
